@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 
-mongoose.connect(mongo)
+mongoose.connect(mongo, { useNewUrlParser: true })
     .then((data) => {
         console.log("Connected to DB!")
         app.listen((process.env.PORT || 3000), () => {

@@ -1,0 +1,109 @@
+<div class="top"></div>
+
+<%- include('partials/header'); -%>
+
+    <div class="formcont">
+        <form action="/signup" id="signup">
+            <h1>Sign up</h1>
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" autocomplete="off">
+            <div class="name error"></div>
+            <label for="image">Profile Picture</label>
+            <input type="file" id="image" name="image" accept="image/*" required>
+            <!-- <div class="email error"></div> -->
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" autocomplete="off">
+            <div class="username error"></div>
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" autocomplete="off">
+            <div class="email error"></div>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password">
+            <span onclick="toggle('show')" id="signupshow"><i class="bi bi-eye-fill"></i></span>
+            <span onclick="toggle('hide')" id="signuphide"><i class="bi bi-eye-slash-fill"></i></span>
+            <div class="password error"></div>
+            <label for="title" class="titlelabel">Title</label>
+            <input type="text" id="title" name="title" autocomplete="off">
+            <div class="title error"></div>
+            <label class="rdct">Already a member? <a href="/login">Login</a></label>
+            <button>Register</button>
+        </form>
+    </div>
+
+    <script>
+        const toggle = (seen) => {
+            const show = document.getElementById("password");
+            const icon = document.getElementById(seen)
+            const showicon = document.getElementById("signupshow")
+            const hideicon = document.getElementById("signuphide")
+
+            if (seen == "show") {
+                hideicon.style.display = "inline"
+                showicon.style.display = "none"
+            } else {
+                showicon.style.display = "inline"
+                hideicon.style.display = "none"
+            }
+            if (show.type === "password") {
+                show.type = "text";
+            } else {
+                show.type = "password";
+            }
+        }
+
+        const form = document.querySelector('form');
+        const nameError = document.querySelector('.name.error')
+        const usernameError = document.querySelector('.username.error')
+        const emailError = document.querySelector('.email.error');
+        const passwordError = document.querySelector('.password.error');
+        const titleError = document.querySelector('.title.error')
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            nameError.textContent = '';
+            usernameError.textContent = '';
+            emailError.textContent = '';
+            passwordError.textContent = '';
+            titleError.textContent = '';
+
+            const name = form.name.value
+            const username = form.username.value
+            const image = document.getElementById('image')
+            // var fd = new FormData();
+            // fd.append('image', image.files[0]);
+            const email = form.email.value;
+            const password = form.password.value;
+            const title = form.title.value;
+
+            const data = JSON.stringify({ name, title, username, email, password })
+            var formData = new FormData();
+            formData.append("data", data)
+            formData.append("image", image.files[0]);
+
+            try {
+                // console.log("in try")
+                const res = await fetch('/signup', {
+                    method: 'POST',
+                    body: formData,
+                    // headers: { 'Content-Type': 'application/json' }
+                });
+                const data = await res.json();
+                console.log(data);
+                if (data.errors) {
+                    nameError.textContent = data.errors.name
+                    usernameError.textContent = data.errors.username
+                    emailError.textContent = data.errors.email;
+                    passwordError.textContent = data.errors.password;
+                    titleError.textContent = data.errors.title
+                }
+                // console.log(data.user, "asrtyyree")
+                if (data.user) {
+                    location.assign('/');
+                }
+            }
+            catch (err) {
+                console.log(err);
+            }
+        });
+    </script>
+
+    <%- include('partials/footer'); -%>

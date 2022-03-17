@@ -1,0 +1,24 @@
+<div class="top"></div>
+
+<%- include('partials/header'); -%>
+
+    <div class="container">
+        <div class="maintext">
+            <h3>Easy-to-use virtual classroom</h3>
+            <h1>Welcome to our Learning Management System</h1>
+            <h2>A Learning Management System (LMS) is an online education hub that provides a large and indispensable
+                set of features to
+                support educational activities such as classroom learning, distance education and continuing education.
+            </h2>
+            <% if (user) { %>
+                <button><a href="/courses">View Courses</a></button>
+                <% } else { %>
+                    <button><a href="/signup">JOIN NOW</a></button>
+                    <% } %>
+        </div>
+        <div class="imagecont">
+            <div class="img-border"><img src="homeImg.png" alt=""></div>
+        </div>
+    </div>
+
+    <%- include('partials/footer'); -%>

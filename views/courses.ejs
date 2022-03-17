@@ -1,0 +1,202 @@
+<div class="top"></div>
+
+<%- include('partials/header'); -%>
+
+    <div class="courses">
+        <div class="courses-nav">
+            <h1>Courses</h1>
+            <div class="html actv" onclick="show('html')">HTML</div>
+            <div class="css" onclick="show('css')">CSS</div>
+            <div class="js" onclick="show('js')">JavaScript</div>
+            <div class="node" onclick="show('node')">NodeJS</div>
+        </div>
+        <div class="course-content">
+            <div id="html" class="text html-text active">
+                <h1>HTML</h1>
+                <p>HTML (HyperText Markup Language) is the most basic building block of the Web. It defines the meaning
+                    and structure of web content. Other technologies besides HTML are generally used to describe a web
+                    page's appearance/presentation (CSS) or functionality/behavior (JavaScript).</p>
+
+                <p>"Hypertext" refers to links that connect web pages to one another, either within a single website or
+                    between websites. Links are a fundamental aspect of the Web. By uploading content to the Internet
+                    and linking it to pages created by other people, you become an active participant in the World Wide
+                    Web.</p>
+
+                <p>HTML uses "markup" to annotate text, images, and other content for display in a Web browser. HTML
+                    markup includes special "elements" such as "head, title, body, header, footer, article, section, p,
+                    div, span, img, aside, audio, canvas, datalist, details, embed, nav, output, progress, video, ul,
+                    ol, li" and many others.</p>
+
+                <p>An HTML element is set off from other text in a document by "tags", which consist of the element name
+                    surrounded by "<" and ">" . The name of an element inside a tag is case insensitive. That is, it can
+                        be written in uppercase, lowercase, or a mixture. </p>
+
+                        <div class="video"><iframe width="800" height="500"
+                                src="https://www.youtube.com/embed/qz0aGYrrlhU"> </iframe></div>
+                        <div class="markcont">
+                            <% if (user.courses.html==true ) { %>
+                                <button class="already">Completed</button>
+                                <% } else { %>
+                                    <button class="markcomplete" onclick="mark('html', '<%= user.id %>')">Mark as
+                                        complete</button>
+                                    <% } %>
+                        </div>
+            </div>
+            <div id="css" class="text css-text">
+                <h1>CSS</h1>
+                <p>Cascading Style Sheets (CSS) is a style sheet language used for describing the presentation of a
+                    document written in a
+                    markup language such as HTML. CSS is a cornerstone technology of the World Wide Web, alongside HTML
+                    and JavaScript.</p>
+
+                <p>CSS is designed to enable the separation of presentation and content, including layout, colors, and
+                    fonts. This
+                    separation can improve content accessibility; provide more flexibility and control in the
+                    specification of presentation
+                    characteristics; enable multiple web pages to share formatting by specifying the relevant CSS in a
+                    separate .css file,
+                    which reduces complexity and repetition in the structural content; and enable the .css file to be
+                    cached to improve the
+                    page load speed between the pages that share the file and its formatting.</p>
+
+                <p>Separation of formatting and content also makes it feasible to present the same markup page in
+                    different styles for
+                    different rendering methods, such as on-screen, in print, by voice (via speech-based browser or
+                    screen reader), and on
+                    Braille-based tactile devices. CSS also has rules for alternate formatting if the content is
+                    accessed on a mobile
+                    device.</p>
+
+                <p>The name cascading comes from the specified priority scheme to determine which style rule applies if
+                    more than one rule
+                    matches a particular element. This cascading priority scheme is predictable. In addition to HTML,
+                    other markup languages support the use of CSS including XHTML, plain XML, SVG, and XUL.</p>
+
+                <div class="video"><iframe width="800" height="500" src="https://www.youtube.com/embed/1Rs2ND1ryYc">
+                    </iframe>
+                </div>
+                <div class="markcont">
+                    <% if (user.courses.css==true ) { %>
+                        <button class="already">Completed</button>
+                        <% } else { %>
+                            <button class="markcomplete" onclick="mark('css', '<%= user.id %>')">Mark as
+                                complete</button>
+                            <% } %>
+                </div>
+            </div>
+            <div id="js" class="text js-text">
+                <h1>JAVASCRIPT</h1>
+                <p>JavaScript, often abbreviated JS, is a programming language that is one of the core technologies
+                    of the World Wide Web, alongside HTML and CSS. Over 97% of websites use JavaScript on the client
+                    side for web page
+                    behavior, often incorporating third-party libraries. All major web browsers have a dedicated
+                    JavaScript engine
+                    to execute the code on users' devices.</p>
+
+                <p>JavaScript is a high-level, often just-in-time compiled language that conforms to the ECMAScript
+                    standard. It has
+                    dynamic typing, prototype-based object-orientation, and first-class functions. It is multi-paradigm,
+                    supporting
+                    event-driven, functional, and imperative programming styles. It has application programming
+                    interfaces (APIs) for
+                    working with text, dates, regular expressions, standard data structures, and the Document Object
+                    Model (DOM).</p>
+
+                <p>The ECMAScript standard does not include any input/output (I/O), such as networking, storage, or
+                    graphics facilities. In
+                    practice, the web browser or other runtime system provides JavaScript APIs for I/O.</p>
+
+                <p>JavaScript engines were originally used only in web browsers, but are now core components of some
+                    servers and a variety
+                    of applications. The most popular runtime system for this usage is Node.js.</p>
+
+                <div class="video"><iframe width="800" height="500" src="https://www.youtube.com/embed/W6NZfCO5SIk">
+                    </iframe>
+                </div>
+                <div class="markcont">
+                    <% if (user.courses.js==true ) { %>
+                        <button class="already">Completed</button>
+                        <% } else { %>
+                            <button class="markcomplete" onclick="mark('js', '<%= user.id %>')">Mark as
+                                complete</button>
+                            <% } %>
+                </div>
+            </div>
+            <div id="node" class="text node-text">
+                <h1>NODE.JS</h1>
+                <p>Node.js is an open-source, cross-platform, back-end JavaScript runtime environment that runs on
+                    the
+                    V8 engine and
+                    executes JavaScript code outside a web browser. Node.js lets developers use JavaScript to write
+                    command line tools and
+                    for server-side scripting—running scripts server-side to produce dynamic web page content before
+                    the
+                    page is sent to the
+                    user's web browser. Consequently, Node.js represents a "JavaScript everywhere" paradigm,
+                    unifying
+                    web-application
+                    development around a single programming language, rather than different languages for
+                    server-side
+                    and client-side
+                    scripts.</p>
+
+                <p>Node.js has an event-driven architecture capable of asynchronous I/O. These design choices aim to
+                    optimize throughput
+                    and scalability in web applications with many input/output operations, as well as for real-time
+                    Web
+                    applications (e.g.,
+                    real-time communication programs and browser games).</p>
+
+                <p>The Node.js distributed development project was previously governed by the Node.js Foundation,
+                    and
+                    has now merged
+                    with the JS Foundation to form the OpenJS Foundation, which is facilitated by the Linux
+                    Foundation's
+                    Collaborative
+                    Projects program.</p>
+
+                <p>Corporate users of Node.js software include GoDaddy, Groupon, IBM, LinkedIn, Microsoft,
+                    Netflix, PayPal, Rakuten, SAP, Walmart, Yahoo!, and Amazon Web Services. </p>
+
+                <div class="video"><iframe width="800" height="500" src="https://www.youtube.com/embed/TlB_eWDSMt4">
+                    </iframe>
+                </div>
+                <div class="markcont">
+                    <% if (user.courses.node==true ) { %>
+                        <button class="already">Completed</button>
+                        <% } else { %>
+                            <button class="markcomplete" onclick="mark('node', '<%= user.id %>')">Mark as
+                                complete</button>
+                            <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        const show = (coursename) => {
+            // coursename = course
+            const course = document.getElementById(coursename)
+            const active = document.getElementsByClassName("active")
+            // console.log(active)
+            active[0].classList.remove("active")
+            course.classList.toggle("active")
+
+            const actv = document.getElementsByClassName("actv")
+            const tag = document.getElementsByClassName(coursename)
+            actv[0].classList.remove("actv")
+            tag[0].classList.toggle("actv")
+        }
+
+        const mark = async (course, id) => {
+            const res = await fetch('/markcomplete', {
+                method: 'POST',
+                body: JSON.stringify({ course, id }),
+                headers: { 'Content-Type': 'application/json' }
+            })
+            setTimeout(function () { window.location.reload(); }, 10);
+        }
+    </script>
+
+    <%- include('partials/footer'); -%>

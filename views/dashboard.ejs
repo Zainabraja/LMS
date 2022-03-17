@@ -1,0 +1,139 @@
+<div class="top"></div>
+
+<%- include('partials/header'); -%>
+
+    <div class="dashboard">
+        <div class="image">
+            <img src="<%= user.image.url %>" alt="">
+        </div>
+        <div class="infotop">
+            <div class="dash-name">
+                <%= user.name %>
+            </div>
+            <div class="dash-title">
+                <%= user.title %>
+            </div>
+            <div class="dash-email">
+                <%= user.email %>
+            </div>
+            <!-- <div class="dash-title">Developer</div> -->
+        </div>
+        <div class="infoedit">
+            <h1>User Info</h1>
+            <form action="/dashboard">
+                <div>
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" autocomplete="off" value="<%=user.username %>"
+                        spellcheck="false" readonly>
+                </div>
+                <div>
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" autocomplete="off" value="<%=user.email %>"
+                        spellcheck="false" readonly>
+                </div>
+                <div>
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" autocomplete="off" value="<%=user.name %>"
+                        spellcheck="false">
+                </div>
+                <div>
+                    <label for="title">Title</label>
+                    <input type="text" id="title" name="title" autocomplete="off" value="<%=user.title %>"
+                        spellcheck="false">
+                </div>
+                <div>
+                    <label for="password">Change Password</label>
+                    <input type="password" id="password" name="password" spellcheck="false" onfocus="showIcon()">
+                    <span onclick="toggle('show')" id="show"><i class="bi bi-eye-fill"></i></span>
+                    <span onclick="toggle('hide')" id="hide"><i class="bi bi-eye-slash-fill"></i></span>
+                </div>
+                <div>
+                    <label for="img">Change Picture</label>
+                    <input type="file" id="image" name="image" accept="image/*">
+                </div>
+                <div class="btn">
+                    <button type="submit">Update</button>
+                </div>
+                <div class="dasherror">
+                    <div class="name error dashboarderror"></div>
+                    <div class="title error dashboarderror"></div>
+                    <div class="password error dashboarderror"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const showIcon = () => {
+            const showicon = document.getElementById("show")
+            showicon.style.display = "inline"
+            const hideicon = document.getElementById("hide")
+            hideicon.style.display = "none"
+        }
+
+        const toggle = (seen) => {
+            const show = document.getElementById("password");
+            const icon = document.getElementById(seen)
+            const showicon = document.getElementById("show")
+            const hideicon = document.getElementById("hide")
+
+            if (seen == "show") {
+                hideicon.style.display = "inline"
+                showicon.style.display = "none"
+            } else {
+                showicon.style.display = "inline"
+                hideicon.style.display = "none"
+            }
+            if (show.type === "password") {
+                show.type = "text";
+            } else {
+                show.type = "password";
+            }
+        }
+
+        const form = document.querySelector('form');
+        const nameError = document.querySelector('.name.error')
+        const passwordError = document.querySelector('.password.error');
+        const titleError = document.querySelector('.title.error')
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            nameError.textContent = '';
+            passwordError.textContent = '';
+            titleError.textContent = '';
+
+            const name = form.name.value;
+            const username = form.username.value;
+            const title = form.title.value;
+            const password = form.password.value;
+            const image = document.getElementById('image')
+
+            const data = JSON.stringify({ name, title, username, password })
+            var formData = new FormData();
+            formData.append("data", data)
+            formData.append("image", image.files[0]);
+
+            try {
+                const res = await fetch('/update', {
+                    method: 'POST',
+                    body: formData,
+                    // headers: { 'Content-Type': 'application/json' }
+                });
+                const data = await res.json();
+                console.log(data);
+                if (data.errors) {
+                    nameError.textContent = data.errors.name
+                    passwordError.textContent = data.errors.password;
+                    titleError.textContent = data.errors.title
+                }
+                if (data.user) {
+                    setTimeout(function () { window.location.reload(); }, 10);
+                }
+            }
+            catch (err) {
+                console.log(err);
+            }
+        });
+    </script>
+
+    <%- include('partials/footer'); -%>

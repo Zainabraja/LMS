@@ -1,0 +1,195 @@
+<div class="top"></div>
+
+<%- include('partials/header'); -%>
+
+    <div class="taskManager">
+        <h1>Manage your tasks here!</h1>
+        <form action="/taskManager" class="newform">
+            <div>
+                <input type="text" name="hiddenusername" id="hiddenusername" value="<%= user.username %>"
+                    style="display: none;">
+                <label for="taskdesc">Describe your task</label>
+                <input type="text" id="taskdesc" name="taskdesc" placeholder="Eg: Complete HTML lesson.."
+                    spellcheck="false" autocomplete="off">
+                <div class="taskdesc error"></div>
+            </div>
+            <div>
+                <label for="deadline">Choose deadline for task </label>
+                <input type="date" name="deadline" id="deadline" min="2022-03-16">
+                <div class="deadline error"></div>
+            </div>
+            <button>New Task <i class="bi bi-plus"></i></button>
+        </form>
+        <% if (task.length!=0) { %>
+            <div class="taskscont">
+                <% for (var i=0; i < task.length; i++){ %>
+                    <% if (task[i].username==user.username) {%>
+                        <div class="taskwrapper">
+                            <div class="left">
+                                <h2>Task <%= i+1 %>
+                                </h2>
+                                <div class="taskdesc-text">
+                                    <span class="hidethemall<%= task[i].id %>">
+                                        <%= task[i].taskdesc %>
+                                    </span>
+                                    <input type=" text" id="taskdesc-edit" name="new-taskdesc"
+                                        class="editform<%= task[i].id %> editform" value="<%= task[i].taskdesc %>"
+                                        spellcheck="false" autocomplete="off">
+                                    <div class="newtaskdesc error"></div>
+                                </div>
+                            </div>
+                            <div class="right">
+                                <h2>Deadline</h2>
+                                <div class="deadline-text">
+                                    <!-- <span class="hidethemall<%= task[i].id %>"> -->
+                                    <%= task[i].deadline.toLocaleString('en-IN').slice(0,9) %>
+                                        <!-- </span> -->
+                                </div>
+                                <h2>Completed</h2>
+                                <div class="completed-text">
+                                    <span class="hidethemall<%= task[i].id %>">
+                                        <% if(task[i].completed==false) { %>
+                                            No
+                                            <% } else { %>
+                                                Yes
+                                                <% } %>
+                                    </span>
+                                    <form class="editform<%= task[i].id %> editform" id="editform">
+                                        <input type="radio" name="completed" id="completed-no" value="false" checked>
+                                        <label for="completed-no">No</label>
+                                        <input type="radio" name="completed" id="completed-yes" value="true">
+                                        <label for="completed-yes">Yes</label>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="doeditbtn doeditbtn<%= task[i].id %> ">
+                                <button id="start-edit" class="start-edit"
+                                    onclick="updatetask('change', '<%= task[i].id %>')"><i
+                                        class="bi bi-pencil-fill"></i></button>
+                                <button id="delete" class="delete" onclick="deletetask('<%=task[i].id %>')"><i
+                                        class="bi bi-trash3-fill"></i></button>
+                            </div>
+                            <button id="editdone" class="editdone editdone<%= task[i].id %>"
+                                onclick="updatetask('changed', '<%= task[i].id %>')">Edit</button>
+                        </div>
+                        <% } %>
+                            <% } %>
+            </div>
+            <% } %>
+
+    </div>
+
+    <script>
+        let today = new Date();
+        const day = String(today.getDate()).padStart(2, '0');
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const year = today.getFullYear();
+
+        today = year + '-' + month + '-' + day;
+        document.getElementById("deadline").setAttribute("min", today);
+
+        const form = document.querySelector('.newform');
+        console.log(form)
+        const taskdescError = document.querySelector('.taskdesc.error')
+        const deadlineError = document.querySelector('.deadline.error')
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            taskdescError.textContent = '';
+            deadlineError.textContent = '';
+            const taskdesc = form.taskdesc.value;
+            const completed = false;
+            const deadline = form.deadline.value;
+            const username = form.hiddenusername.value;
+
+            try {
+                const res = await fetch('/addtask', {
+                    method: 'POST',
+                    body: JSON.stringify({ username, taskdesc, completed, deadline }),
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                const data = await res.json();
+                // console.log(data);
+                if (data.errors) {
+                    taskdescError.textContent = data.errors.taskdesc
+                    deadlineError.textContent = data.errors.deadline
+                }
+                if (data.task) {
+                    // res.status(201).json({ user: user._id });
+                    console.log(data.task)
+                    setTimeout(function () { window.location.reload(); }, 10);
+                }
+                //  else {
+                //     taskdesc = ""
+                //     deadline = ""
+                // }
+            }
+            catch (err) {
+                console.log(err);
+            }
+        })
+
+        const deletetask = async (id) => {
+            const res = await fetch('/deletetask', {
+                method: 'POST',
+                body: JSON.stringify({ id }),
+                headers: { 'Content-Type': 'application/json' }
+            })
+            setTimeout(function () { window.location.reload(); }, 10);
+        }
+
+        const updatetask = async (str, id) => {
+            console.log(id)
+            if (str == "change") {
+                const spans = document.querySelectorAll(`.hidethemall${id}`)
+                const inputs = document.querySelectorAll(`.editform${id}`)
+                const startedit = document.querySelector(`.doeditbtn${id}`)
+                const finishedit = document.querySelector(`.editdone${id}`)
+                console.log(inputs)
+                for (var i = 0; i < 2; i++) {
+                    spans[i].style.display = "none"
+                    inputs[i].style.display = "block"
+                }
+
+                startedit.style.display = "none"
+                finishedit.style.display = "block"
+            } else {
+                const taskdesc = document.getElementById('taskdesc-edit').value
+                const completed = document.querySelector('input[name="completed"]:checked').value
+
+                const taskdescError = document.querySelector('.newtaskdesc.error')
+
+                taskdescError.textContent = '';
+
+                const res = await fetch('/updatetask', {
+                    method: 'POST',
+                    body: JSON.stringify({ id, taskdesc, completed }),
+                    headers: { 'Content-Type': 'application/json' }
+                })
+
+                const data = await res.json();
+
+                if (data.errors) {
+                    taskdescError.textContent = data.errors.taskdesc
+                }
+                if (data.task) {
+                    // res.status(201).json({ user: user._id });
+                    console.log(data.task)
+                    setTimeout(function () { window.location.reload(); }, 10);
+                }
+            }
+        }
+    </script>
+
+    <%- include('partials/footer'); -%>
+
+
+        <!-- picture -->
+        <!-- render picture dashboard -->
+        <!-- responsiveness -->
+
+
+        <!-- Done -->
+        <!-- task manager -->
+        <!-- login/signup password seen not seen -->
+        <!-- mark as complete course -->

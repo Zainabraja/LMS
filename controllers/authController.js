@@ -1,4 +1,4 @@
-const User = require("../models/User");
+const User = require("../models/user");
 const Task = require("../models/task")
 const jwt = require('jsonwebtoken');
 const cloudinary = require('cloudinary').v2;

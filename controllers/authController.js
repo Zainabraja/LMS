@@ -223,27 +223,28 @@ module.exports.deletetask_post = async (req, res) => {
 
 module.exports.markcomplete_post = async (req, res) => {
     const { course, id } = req.body;
-
-    const filter = { id };
+    console.log(id)
+    // const filter = { id };
     let user
     if (course == "html") {
-        user = await User.findOneAndUpdate(filter, { "courses.html": true }, {
+        user = await User.findByIdAndUpdate(id, { "courses.html": true }, {
             new: true
         });
+        console.log(user)
     } else if (course == "css") {
-        user = await User.findOneAndUpdate(filter, { "courses.css": true }, {
+        user = await User.findOneAndUpdate(id, { "courses.css": true }, {
             new: true
         });
     } else if (course == "js") {
-        user = await User.findOneAndUpdate(filter, { "courses.js": true }, {
+        user = await User.findOneAndUpdate(id, { "courses.js": true }, {
             new: true
         });
     } else {
-        user = await User.findOneAndUpdate(filter, { "courses.node": true }, {
+        user = await User.findOneAndUpdate(id, { "courses.node": true }, {
             new: true
         });
     }
-    console.log(user)
+    // console.log(user)
     return user
 }
 

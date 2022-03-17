@@ -21,9 +21,9 @@ app.use(cookieParser());
 mongoose.connect(mongo)
     .then((data) => {
         console.log("Connected to DB!")
-        app.listen((3000), () => {
-            console.log("Listening on port 3000!")
-        })
+        app.listen((process.env.PORT || 3000), () => {
+            console.log("Server started!")
+        });
     })
     .catch((err) => {
         console.log(err)

@@ -31,7 +31,7 @@ mongoose.connect(mongo, { useNewUrlParser: true })
 
 
 app.get('*', verifyUser)
-app.get('/', (req, res) => res.render('home', { title: "LMS" }))
+app.get('/', (req, res) => res.render('index', { title: "LMS" }))
 app.get('/dashboard', cookieAuth, (req, res) => res.render('dashboard', { title: "Dashboard" }));
 app.get('/courses', cookieAuth, (req, res) => res.render('courses', { title: "Courses" }));
 app.get('/taskManager', cookieAuth, checkTask, (req, res) => res.render('taskManager', { title: "Task Manager" }));
